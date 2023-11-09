@@ -1,41 +1,42 @@
 package com.jnu.student.myfirstapplication.views;
 
-import androidx.appcompat.app.AppCompatActivity;
-
-import android.app.AlertDialog;
 import android.os.Bundle;
-import android.widget.TextView;
-import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.viewpager2.widget.ViewPager2;
+
+import com.google.android.material.tabs.TabLayout;
+import com.google.android.material.tabs.TabLayoutMediator;
 import com.jnu.student.myfirstapplication.R;
+import com.jnu.student.myfirstapplication.adapter.MainActivityViewPagerFragmentAdapter;
 import com.jnu.student.myfirstapplication.base.BaseAppCompatActivity;
 
 public class MainActivity extends BaseAppCompatActivity {
-    private TextView tv_top;
-    private TextView tv_bottom;
-
-//    private TextView textView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-//        textView = findViewById(R.id.text_view_hello_world);
-//        textView.setText(R.string.hello_android);
+        ViewPager2 vp_main = findViewById(R.id.vp_main);
+        vp_main.setAdapter(new MainActivityViewPagerFragmentAdapter(getSupportFragmentManager(), getLifecycle()));
 
-        tv_top = findViewById(R.id.tv_top);
-        tv_bottom = findViewById(R.id.tv_bottom);
-        findViewById(R.id.btn_change).setOnClickListener(v -> {
-            String tmp = (String) tv_top.getText();
-            tv_top.setText(tv_bottom.getText());
-            tv_bottom.setText(tmp);
-            // alert
-            Toast.makeText(this, "交换成功！", Toast.LENGTH_SHORT).show();
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setTitle("提示");
-            builder.setMessage("交换成功！");
-            builder.create().show();
+        TabLayout tl_header = findViewById(R.id.tl_header);
+
+        TabLayoutMediator tabLayoutMediator = new TabLayoutMediator(tl_header, vp_main, (tab, position) -> {
+            switch(position) {
+                case 0:
+                    tab.setText("图书");
+                    break;
+                case 1:
+                    tab.setText("新闻");
+                    break;
+                case 2:
+                    tab.setText("地图");
+                    break;
+            }
         });
+
+        tabLayoutMediator.attach();
     }
 }
