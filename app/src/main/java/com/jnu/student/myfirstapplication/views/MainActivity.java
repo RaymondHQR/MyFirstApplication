@@ -1,4 +1,4 @@
-package com.jnu.student.myfirstapplication;
+package com.jnu.student.myfirstapplication.views;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -7,7 +7,10 @@ import android.os.Bundle;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class MainActivity extends AppCompatActivity {
+import com.jnu.student.myfirstapplication.R;
+import com.jnu.student.myfirstapplication.base.BaseAppCompatActivity;
+
+public class MainActivity extends BaseAppCompatActivity {
     private TextView tv_top;
     private TextView tv_bottom;
 

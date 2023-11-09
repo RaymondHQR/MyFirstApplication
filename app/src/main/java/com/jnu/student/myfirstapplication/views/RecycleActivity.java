@@ -1,4 +1,4 @@
-package com.jnu.student.myfirstapplication;
+package com.jnu.student.myfirstapplication.views;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
@@ -10,18 +10,24 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.widget.AdapterView;
+import android.widget.Toast;
 
+import com.jnu.student.myfirstapplication.R;
 import com.jnu.student.myfirstapplication.adapter.ShopItemAdapter;
+import com.jnu.student.myfirstapplication.base.BaseAppCompatActivity;
 import com.jnu.student.myfirstapplication.bean.Book;
 
 import java.util.ArrayList;
 
-public class RecycleActivity extends AppCompatActivity {
+public class RecycleActivity extends BaseAppCompatActivity {
 
     private RecyclerView recyclerView;
     ActivityResultLauncher<Intent> addBookLauncher;
+    private ArrayList<Book> books;
+    private ShopItemAdapter shopItemAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,13 +37,13 @@ public class RecycleActivity extends AppCompatActivity {
         recyclerView = findViewById(R.id.recycle_view_books);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        ArrayList<Book> books = new ArrayList<>();
+        books = new ArrayList<>();
 
         books.add(new Book("软件项目管理案例教程（第4版）", R.drawable.book_2));
         books.add(new Book("创新工程实践", R.drawable.book_no_name));
         books.add(new Book("信息安全数学基础（第2版）", R.drawable.book_1));
 
-        ShopItemAdapter shopItemAdapter = new ShopItemAdapter(books);
+        shopItemAdapter = new ShopItemAdapter(books);
         recyclerView.setAdapter(shopItemAdapter);
 
         registerForContextMenu(recyclerView);
@@ -47,10 +53,12 @@ public class RecycleActivity extends AppCompatActivity {
                 result -> {
                     if (result.getResultCode() == Activity.RESULT_OK) {
                         Intent data = result.getData();
-                        String name = data.getStringExtra("name");
-                        books.add(new Book(name, R.drawable.book_2));
-                        shopItemAdapter.notifyItemInserted(books.size());
-                    } else if (result.getResultCode() == Activity.RESULT_CANCELED) {
+                        if (data != null) {
+                            String name = data.getStringExtra("name");
+                            books.add(new Book(name, R.drawable.book_2));
+                            shopItemAdapter.notifyItemInserted(books.size());
+                            Toast.makeText(this, "添加书本成功！", Toast.LENGTH_SHORT).show();
+                        }
                     }
                 }
         );
@@ -62,9 +70,12 @@ public class RecycleActivity extends AppCompatActivity {
                 .getMenuInfo();
         switch (item.getItemId()) {
             case 0:
-
+                addBookLauncher.launch(new Intent(this, AddBookActivity.class));
                 break;
             case 1:
+                books.remove(shopItemAdapter.getCurrentPosition());
+                shopItemAdapter.notifyItemRemoved(shopItemAdapter.getCurrentPosition());
+                Toast.makeText(this, "删除成功！", Toast.LENGTH_SHORT).show();
                 break;
             case 2:
                 break;

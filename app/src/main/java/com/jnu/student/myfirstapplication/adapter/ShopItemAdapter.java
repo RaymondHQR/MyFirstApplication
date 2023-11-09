@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.jnu.student.myfirstapplication.R;
@@ -22,11 +23,13 @@ public class ShopItemAdapter extends RecyclerView.Adapter<ShopItemAdapter.ViewHo
 
     private final ArrayList<Book> ListBooks;
 
+    private int currentPosition;
+
     /**
      * Provide a reference to the type of views that you are using
      * (custom ViewHolder).
      */
-    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnCreateContextMenuListener {
+    public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnCreateContextMenuListener {
         private final TextView textViewName;
         private final ImageView imageViewItem;
 
@@ -72,6 +75,7 @@ public class ShopItemAdapter extends RecyclerView.Adapter<ShopItemAdapter.ViewHo
     }
 
     // Create new views (invoked by the layout manager)
+    @NonNull
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
         // Create a new view, which defines the UI of the list item
@@ -90,12 +94,19 @@ public class ShopItemAdapter extends RecyclerView.Adapter<ShopItemAdapter.ViewHo
         viewHolder.getTextViewName().setText(ListBooks.get(position).getTitle());
         viewHolder.getImageViewItem().setImageResource(ListBooks.get(position).getCoverResourceId());
 
-
+        viewHolder.itemView.setOnLongClickListener(v -> {
+            currentPosition = position;
+            return false;
+        });
     }
 
     // Return the size of your dataset (invoked by the layout manager)
     @Override
     public int getItemCount() {
         return ListBooks.size();
+    }
+
+    public int getCurrentPosition() {
+        return currentPosition;
     }
 }
