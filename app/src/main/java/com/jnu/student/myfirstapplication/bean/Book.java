@@ -1,6 +1,8 @@
 package com.jnu.student.myfirstapplication.bean;
 
-public class Book {
+import java.io.Serializable;
+
+public class Book implements Serializable {
 
     private final String title;
     private final int coverResourceId;
