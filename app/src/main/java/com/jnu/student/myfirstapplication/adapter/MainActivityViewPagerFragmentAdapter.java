@@ -7,6 +7,7 @@ import androidx.lifecycle.Lifecycle;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 
 import com.jnu.student.myfirstapplication.fragments.BookFragment;
+import com.jnu.student.myfirstapplication.fragments.TencentMapFragment;
 import com.jnu.student.myfirstapplication.fragments.WebViewFragment;
 
 public class MainActivityViewPagerFragmentAdapter extends FragmentStateAdapter {
@@ -24,7 +25,7 @@ public class MainActivityViewPagerFragmentAdapter extends FragmentStateAdapter {
             case 1:
                 return WebViewFragment.newInstance("http://news.baidu.com/");
             case 2:
-                return WebViewFragment.newInstance("http://map.baidu.com/");
+                return TencentMapFragment.newInstance();
         }
         return BookFragment.newInstance();
     }
